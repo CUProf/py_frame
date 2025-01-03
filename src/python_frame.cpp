@@ -2,7 +2,7 @@
 
 #include <Python.h>
 #include <frameobject.h>
-// #include <pybind11/pybind11.h>
+#include <pybind11/pybind11.h>
 
 #include <sstream>
 #include <string>
@@ -74,7 +74,7 @@ std::vector<PythonFrame_t>& PyFrameChecker::get_frames(bool cached) {
     }
 
     // GIL lock is required
-    // pybind11::gil_scoped_acquire gil;
+    pybind11::gil_scoped_acquire gil;
 
     PyFrameObject* frame = PyEval_GetFrame();
     _frames.clear();

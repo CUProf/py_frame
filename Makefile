@@ -33,6 +33,9 @@ PY_INCLUDE = -I$(PYTHON_INCLUDE_DIR)
 PY_LDFLAGS = -L$(PYTHON_LIB_DIR)/../ -Wl,-rpath=$(PYTHON_LIB_DIR)/../
 PY_LIBS = -lpython$(PYTHON_VERSION)
 
+PYBDIN11_DIR = ./pybind11
+PY_INCLUDE += -I$(PYBDIN11_DIR)/include
+
 all: dirs lib
 dirs: $(OBJ_DIR) $(LIB_DIR)
 lib: $(LIB)
