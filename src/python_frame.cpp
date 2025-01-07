@@ -136,8 +136,8 @@ std::vector<std::string> get_pyframes(int keep) {
            << std::to_string(python_frames[i].lineno) << "  def "
            << std::string(python_frames[i].func_name) << "() "
            << std::string(python_frames[i].file_name) << ":"
-           << std::to_string(python_frames[i].func_first_lineno)
-           << std::endl;
+           << std::to_string(python_frames[i].func_first_lineno);
+
         frames.push_back(ss.str());
     }
 
