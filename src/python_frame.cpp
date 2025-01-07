@@ -97,7 +97,7 @@ bool get_python_frames(std::vector<PythonFrame_t> &frames) {
     return frames.size() > 0;
 }
 
-std::string get_py_frames() {
+std::string print_pyframes(int verbose) {
     std::vector<PythonFrame_t> python_frames;
     get_python_frames(python_frames);
 
@@ -111,6 +111,35 @@ std::string get_py_frames() {
            << std::to_string(python_frames[i].func_first_lineno)
            << std::endl;
     }
-    // std::cout << ss.str() << std::endl;
+
+    if (verbose) {
+        printf("%s", ss.str().c_str());
+        fflush(stdout);
+    }
+
     return ss.str();
+}
+
+
+std::vector<std::string> get_pyframes(int keep) {
+    std::vector<PythonFrame_t> python_frames;
+    get_python_frames(python_frames);
+
+    std::vector<std::string> frames;
+    for (size_t i = 0; i < python_frames.size(); i++) {
+        if (keep >= 0 && i >= keep) {
+            break;
+        }
+
+        std::stringstream ss;
+        ss << std::string(python_frames[i].file_name) << ":"
+           << std::to_string(python_frames[i].lineno) << "  def "
+           << std::string(python_frames[i].func_name) << "() "
+           << std::string(python_frames[i].file_name) << ":"
+           << std::to_string(python_frames[i].func_first_lineno)
+           << std::endl;
+        frames.push_back(ss.str());
+    }
+
+    return frames;
 }
