@@ -132,11 +132,10 @@ std::vector<std::string> get_pyframes(int keep) {
         }
 
         std::stringstream ss;
-        ss << std::string(python_frames[i].file_name) << ":"
-           << std::to_string(python_frames[i].lineno) << "  def "
-           << std::string(python_frames[i].func_name) << "() "
+        ss << "f-" << std::to_string(i) << " "
            << std::string(python_frames[i].file_name) << ":"
-           << std::to_string(python_frames[i].func_first_lineno);
+           << std::to_string(python_frames[i].lineno) << "  def "
+           << std::string(python_frames[i].func_name) << "()";
 
         frames.push_back(ss.str());
     }
