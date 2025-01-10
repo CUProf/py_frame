@@ -3,13 +3,13 @@ CONFIGS := Makefile.config
 
 include $(CONFIGS)
 
-OBJ_DIR := obj/
-SRC_DIR := src/
-INC_DIR := include/
-LIB_DIR := lib/
+OBJ_DIR := obj
+SRC_DIR := src
+INC_DIR := include
+LIB_DIR := lib
 PREFIX := py_frame
 
-LIB := $(LIB_DIR)lib$(PROJECT).so
+LIB := $(LIB_DIR)/lib$(PROJECT).so
 CUR_DIR := $(shell pwd)
 
 CXX ?=
@@ -23,8 +23,8 @@ else
 	CFLAGS += -O3
 endif
 
-SRCS := $(notdir $(wildcard $(SRC_DIR)*.cpp $(SRC_DIR)*/*.cpp))
-OBJS := $(addprefix $(OBJ_DIR), $(patsubst %.cpp, %.o, $(SRCS)))
+SRCS := $(notdir $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/*/*.cpp))
+OBJS := $(addprefix $(OBJ_DIR)/, $(patsubst %.cpp, %.o, $(SRCS)))
 
 PYTHON_INCLUDE_DIR = $(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
 PYTHON_LIB_DIR = $(shell python3 -c "import sysconfig; print(sysconfig.get_path('stdlib'))")
@@ -36,9 +36,9 @@ PY_LIBS = -lpython$(PYTHON_VERSION)
 PYBDIN11_DIR = ./pybind11
 PY_INCLUDE += -I$(PYBDIN11_DIR)/include
 
-all: dirs lib
+all: dirs libs
 dirs: $(OBJ_DIR) $(LIB_DIR)
-lib: $(LIB)
+libs: $(LIB)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
@@ -49,11 +49,11 @@ $(LIB_DIR):
 $(LIB): $(OBJS)
 	$(CXX) $(LDFLAGS) $(PY_LDFLAGS) -fPIC -shared -o $@ $^ $(LDFLAGS) $(PY_LIBS)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
-	$(CXX) -I$(INC_DIR) $(PY_INCLUDE) $(CFLAGS) -fPIC -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CFLAGS) -I$(INC_DIR) $(PY_INCLUDE) -fPIC -c $< -o $@
 
-$(OBJ_DIR)%.o: $(SRC_DIR)/*/%.cpp
-	$(CXX) -I$(INC_DIR) $(PY_INCLUDE) $(CFLAGS) -fPIC -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/*/%.cpp
+	$(CXX) $(CFLAGS) -I$(INC_DIR) $(PY_INCLUDE) -fPIC -c $< -o $@
 
 .PHONY: clean
 clean:
